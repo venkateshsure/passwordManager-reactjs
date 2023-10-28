@@ -25,3 +25,19 @@
   flex-direction: column;
   align-items: center;
 }
+
+.delete-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.delete-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.star-icon {
+  width: 30px;
+  height: 30px;
+}

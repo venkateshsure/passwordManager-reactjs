@@ -8,6 +8,7 @@ class PasswordManager extends Component {
     website: '',
     username: '',
     password: '',
+    isChecked: false,
     passwordManagerList: [],
   }
 
@@ -21,6 +22,31 @@ class PasswordManager extends Component {
 
   passwordChange = event => {
     this.setState({password: event.target.value})
+  }
+
+  checkBox = event => {
+    console.log(event.target.checked)
+    this.setState({isChecked: event.target.checked})
+  }
+
+  deletePasswordContainer = id => {
+    const {passwordManagerList} = this.state
+    /* const deletePassword = passwordManagerList.filter(each => each.id === id)
+    console.log(passwordManagerList)
+    console.log(deletePassword)
+    this.setState({passwordManagerList}) */
+    const newPasswordList = passwordManagerList.filter(each => each.id !== id)
+    console.log(newPasswordList)
+    this.setState({passwordManagerList: newPasswordList})
+  }
+
+  searchChange = event => {
+    console.log(event.target.value)
+    const {passwordManagerList} = this.state
+    const searchResults = passwordManagerList.filter(each =>
+      each.website.toLowerCase().includes(event.target.value.toLowerCase()),
+    )
+    this.setState({passwordManagerList: searchResults})
   }
 
   submitForm = event => {
@@ -37,7 +63,13 @@ class PasswordManager extends Component {
   }
 
   render() {
-    const {website, username, password, passwordManagerList} = this.state
+    const {
+      website,
+      username,
+      password,
+      isChecked,
+      passwordManagerList,
+    } = this.state
 
     return (
       <div className="con">
@@ -48,7 +80,7 @@ class PasswordManager extends Component {
         />
         <div className="fir-con">
           <form onSubmit={this.submitForm} className="child-fir-con">
-            <p className="para">Add New Password</p>
+            <h1 className="para">Add New Password</h1>
             <div className="input-con">
               <img
                 src="https://assets.ccbp.in/frontend/react-js/password-manager-website-img.png"
@@ -94,7 +126,7 @@ class PasswordManager extends Component {
                 onChange={this.passwordChange}
               />
             </div>
-            <button className="button" type="submit">
+            <button data-testid="delete" className="button" type="submit">
               Add
             </button>
           </form>
@@ -108,27 +140,45 @@ class PasswordManager extends Component {
         </div>
         <div className="sec-con">
           <div className="fir-con-head">
-            <p className="para">Your Passwords {passwordManagerList.length}</p>
+            <div>
+              <h1 className="para">Your Passwords</h1>
+              <p> {passwordManagerList.length}</p>
+            </div>
             <div className="search-con">
               <img
                 src="https://assets.ccbp.in/frontend/react-js/password-manager-search-img.png"
                 alt="search"
                 className="search-logo"
               />
-              <input className="input" type="search" placeholder="search" />
+              <input
+                onChange={this.searchChange}
+                className="input"
+                type="search"
+                placeholder="search"
+              />
             </div>
           </div>
           <div className="hr-con">
             <hr className="search-hr-con" />
           </div>
           <div className="show-password-con">
-            <input type="checkbox" />
-            <p>Show Passwords</p>
+            <input
+              type="checkbox"
+              onChange={this.checkBox}
+              checked={isChecked}
+              id="checkBox"
+            />
+            <label htmlFor="checkBox">Show Passwords</label>
           </div>
           <ul className="ul-con">
             {passwordManagerList.length > 0 ? (
               passwordManagerList.map(each => (
-                <EachPasswordManager each={each} key={each.id} />
+                <EachPasswordManager
+                  isChecked={isChecked}
+                  each={each}
+                  key={each.id}
+                  deletePasswordContainer={this.deletePasswordContainer}
+                />
               ))
             ) : (
               <div className="no-passwords">
