@@ -31,7 +31,7 @@ class PasswordManager extends Component {
 
   deletePasswordContainer = id => {
     const {passwordManagerList} = this.state
-    /* const deletePassword = passwordManagerList.filter(each => each.id === id)
+    /*   const deletePassword = passwordManagerList.filter(each => each.id === id)
     console.log(passwordManagerList)
     console.log(deletePassword)
     this.setState({passwordManagerList}) */
